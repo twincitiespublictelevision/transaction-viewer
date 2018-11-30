@@ -5,10 +5,6 @@ import { connector } from '../store';
 let uuid = require('uuid/v4');
 
 class FilterList extends Component {
-  state: {
-    filterGroups: Array
-  };
-
   constructor(props) {
     super(props);
 

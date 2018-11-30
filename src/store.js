@@ -7,6 +7,16 @@ import * as actions from './actions/actions';
 import * as actionCreators from './actions/creators';
 import moment from 'moment';
 
+export type Endpoints = {|
+  fields: string
+  profile: string,
+  transactions: string
+|};
+
+export type Config = {|
+  endpoints: Endpoints
+|};
+
 export type PaymentMethod = 'EFT' | 'Credit' | 'Paypal'
 
 export type Record = {
@@ -37,6 +47,7 @@ type Filter = {
 };
 type FilterMethod = 'additive' | 'subtractive' | 'advanced';
 type State = {
+  +config: Config,
   +rows: Array<Record>,
   +dimensions: Array<{value: string, title: string, hide: Array<string>}>,
   +filters: Array<Filter>,
@@ -45,9 +56,7 @@ type State = {
   +rowsPerPage: number,
   +pivots: {},
   +startDate: moment,
-  +endDate: moment,
-  +nonce: string,
-  +user: {id: number}
+  +endDate: moment
 }
 
 type AdvancedFilter = {
@@ -65,78 +74,35 @@ type AdvancedFilterGroup = {
 
 // Define the application data structure with initial values
 const defaultState: State = {
+  config: {
+    endpoints: {
+      fields: '',
+      profile: '',
+      transactions: ''
+    }
+  },
   rows: [],
-  dimensions: [
-    { value: 'datetime', title: 'Date Time', hide:[] },
-    { value: 'date', title: 'Date', hide:['table'] },
-    { value: 'time', title: 'Time', hide:['table'] },
-    { value: 'source', title: 'Origin', hide:[] },
-    { value: 'program', title: 'Program', hide:[]},
-    { value: 'pledge_code', title: 'Pledge Code', hide:[] },
-    { value: 'prem_1', title: 'Prem 1', hide:[] },
-    { value: 'prem_2', title: 'Prem 2', hide:[] },
-    { value: 'payment_type', title: 'Payment Type', hide:[] },
-    { value: 'one_time', title: 'One Time Amount', hide:[] },
-    { value: 'monthly', title: 'Monthly Amount', hide:[] },
-    { value: 'zip_code', title: 'Zipcode', hide:[] },
-    { value: 'first', title: 'First', hide:[] },
-    { value: 'last', title: 'Last', hide:[] },
-    { value: 'city', title: 'City', hide:[] },
-    { value: 'existing_member', title: 'Existing Member', hide:[] },
-    { value: 'member_number', title: 'Member Number', hide:[] },
-    { value: 'payment_method', title: 'Payment Method', hide:[] },
-    { value: 'approved', title: 'Approved?', hide:[] },
-  ],
+  dimensions: [],
   filters: [],
   filterMethod: 'subtractive',
   advancedFilters: [],
   rowsPerPage: 25,
   pivots: {},
   startDate: moment().hours(0).minutes(0),
-  endDate: moment().hours(23).minutes(59),
-  nonce: '',
-  user: {id: 0}
+  endDate: moment().hours(23).minutes(59)
 };
 
 let initialState = defaultState;
 
-// Begin hydrate process for user data
-if (window.wpData && window.wpData.user) {
-  if (window.wpData.user.settings) {
-    if (window.wpData.user.settings.startDate) {
-      window.wpData.user.settings.startDate = moment(window.wpData.user.settings.startDate);
-    }
-
-    if (window.wpData.user.settings.endDate) {
-      window.wpData.user.settings.endDate = moment(window.wpData.user.settings.endDate);
-    }
-
-    (window.wpData.user.settings.filters || []).forEach(filter => {
-      filter.fn = function (input) {
-        let point = input[filter.type] !== null ? input[filter.type] : '';
-
-        // Transform the record data point to a string and perform a simple
-        // search to determine matches
-        return point.toString().search(new RegExp(filter.value, 'i')) !== -1;
-      }
-    });
-
-    Object.keys(window.wpData.user.settings.pivots || {}).forEach(key => {
-      window.wpData.user.settings.pivots[key] = window.wpData.user.settings.pivots[key];
-    });
-  }
-
-  initialState = Object.assign(
-    {},
-    defaultState,
-    {user: {id: window.wpData.user.id || 0}},
-    window.wpData.user.settings || {},
-    {nonce: window.wpData.nonce}
-  );
-}
-
 const reducer = function reducer(state: State = defaultState, action) {
   switch (action.type) {
+
+    case actions.SET_CONFIG:
+      return Object.assign(
+        {},
+        state,
+        {config: action.value}
+      );
 
     // Handle new data from the server
     case actions.RECEIVED_DATA:
@@ -272,6 +238,20 @@ const reducer = function reducer(state: State = defaultState, action) {
         {pivots: pivots}
       );
 
+    case actions.RECEIVED_PROFILE:
+      return Object.assign(
+        {},
+        state,
+        action.value
+      );
+
+    case actions.RECEIVED_FIELDS:
+      return Object.assign(
+        {},
+        state,
+        { dimensions: action.value }
+      );
+
     default:
       return state;
   }
@@ -290,6 +270,7 @@ const store = createStore(
 
 const mapStateToProps = function mapStateToProps(state) {
   return {
+    config: state.config,
     rows: state.rows,
     dimensions: state.dimensions,
     filters: state.filters,
@@ -298,72 +279,69 @@ const mapStateToProps = function mapStateToProps(state) {
     rowsPerPage: state.rowsPerPage,
     pivots: state.pivots,
     startDate: state.startDate,
-    endDate: state.endDate,
-    nonce: state.nonce,
-    user: state.user
+    endDate: state.endDate
   };
 };
 
-/**
- * Accepts a nonce generated by the server and generates the
- * mapDispatchToProps function that is used by redux
- *
- * @param {string} wpNonce A server generated nonce
- * @returns {function}
- */
-const mapDispatchToPropsGenerator = function mapDispatchToPropsGenerator(wpNonce) {
-  return function mapDispatchToProps(dispatch) {
-    return {
-      fetchData() {
-        actionCreators.fetchData(wpNonce)(dispatch, store.getState);
-      },
-      receiveData(data) {
-        dispatch(actionCreators.receiveData(data));
-      },
-      changeRowsPerPage(rowsPerPage) {
-        dispatch(actionCreators.changeRowsPerPage(rowsPerPage));
-      },
-      changeRowsPerPivot(rowsPerPivotData) {
-        dispatch(actionCreators.changeRowsPerPivot(rowsPerPivotData));
-      },
-      addFilter(filter) {
-        dispatch(actionCreators.addFilter(filter));
-      },
-      removeFilter(id) {
-        dispatch(actionCreators.removeFilter(id));
-      },
-      setFilterMode(mode) {
-        dispatch(actionCreators.setFilterMode(mode));
-      },
-      setAdvancedFilters(filterList) {
-        dispatch(actionCreators.setAdvancedFilters(filterList));
-      },
-      setStartDate(startDate) {
-        actionCreators.setStartDate(wpNonce)(startDate)(dispatch, store.getState);
-      },
-      setEndDate(endDate) {
-        actionCreators.setEndDate(wpNonce)(endDate)(dispatch, store.getState);
-      },
-      removeEndDate() {
-        actionCreators.removeEndDate(wpNonce)(dispatch, store.getState);
-      },
-      addPivotView(newPivotData) {
-        dispatch(actionCreators.addPivotView(newPivotData));
-      },
-      removePivotView(uuid) {
-        dispatch(actionCreators.removePivotView(uuid));
-      }
-    };
+const mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    setConfig(config) {
+      dispatch(actionCreators.configure(config));
+    },
+    loadFields() {
+      return actionCreators.loadFields(dispatch, store.getState;
+    },
+    fetchData() {
+      return actionCreators.fetchData(dispatch, store.getState);
+    },
+    receiveData(data) {
+      dispatch(actionCreators.receiveData(data));
+    },
+    changeRowsPerPage(rowsPerPage) {
+      dispatch(actionCreators.changeRowsPerPage(rowsPerPage));
+    },
+    changeRowsPerPivot(rowsPerPivotData) {
+      dispatch(actionCreators.changeRowsPerPivot(rowsPerPivotData));
+    },
+    addFilter(filter) {
+      dispatch(actionCreators.addFilter(filter));
+    },
+    removeFilter(id) {
+      dispatch(actionCreators.removeFilter(id));
+    },
+    setFilterMode(mode) {
+      dispatch(actionCreators.setFilterMode(mode));
+    },
+    setAdvancedFilters(filterList) {
+      dispatch(actionCreators.setAdvancedFilters(filterList));
+    },
+    setStartDate(startDate) {
+      actionCreators.setStartDate(startDate)(dispatch, store.getState);
+    },
+    setEndDate(endDate) {
+      actionCreators.setEndDate(endDate)(dispatch, store.getState);
+    },
+    removeEndDate() {
+      actionCreators.removeEndDate(dispatch, store.getState);
+    },
+    addPivotView(newPivotData) {
+      dispatch(actionCreators.addPivotView(newPivotData));
+    },
+    removePivotView(uuid) {
+      dispatch(actionCreators.removePivotView(uuid));
+    },
+    loadProfile() {
+      return actionCreators.loadProfile(dispatch, store.getState);
+    },
+    saveProfile(data) {
+      return actionCreators.updateProfile(updateProfile)(dispatch, store.getState);
+    }
   };
 };
 
-// If a nonce is not found then empty string will be used. This will should
-// intentionally cause communication with the server to fail
 const connector = connect(
   mapStateToProps,
-  mapDispatchToPropsGenerator(
-    (window.wpData && window.wpData.nonce) || ''
-  )
+  mapDispatchToProps
 );
 
 function testRow(row: Record, filterDimension:string, filterValue: string) {
@@ -371,6 +349,7 @@ function testRow(row: Record, filterDimension:string, filterValue: string) {
 
   return point.toString().search(new RegExp(filterValue, 'i')) !== -1;
 }
+
 function generateFilterFn(filterList: Array<AdvancedFilterGroup>) {
   return function(rows: Array<Record>) {
     return rows.filter(function(row) {

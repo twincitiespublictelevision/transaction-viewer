@@ -1,34 +1,37 @@
 {
   "name": "transaction-viewer",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/bundle.js",
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development",
-    "build": "webpack --config ./webpack.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "./node_modules/rollup/bin/rollup -c",
+    "test": "NODE_ENV=test jest"
   },
   "author": "TPT <webmaster@tpt.org>",
   "license": "UNLICENSED",
-  "devDependencies": {
+  "dependencies": {
     "axios": "^0.18.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "css-loader": "^0.28.11",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.22.2",
-    "react": "^16.4.0",
     "react-dates": "^16.7.0",
-    "react-dom": "^16.4.0",
-    "react-pivot": "^3.0.0",
+    "react-pivot": "^3.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0",
-    "style-loader": "^0.21.0",
-    "webpack": "^4.11.1",
-    "webpack-cli": "^3.0.2",
-    "webpack-dev-server": "^3.1.4"
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "flow-bin": "^0.80.0",
+    "jest": "^23.5.0",
+    "rollup": "^0.65.2",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-flow": "^1.1.1",
+    "rollup-plugin-postcss": "^1.6.2"
   }
 }

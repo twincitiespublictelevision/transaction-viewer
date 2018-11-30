@@ -130,23 +130,33 @@ class TransactionReport extends Component {
   constructor(props) {
     super(props);
 
-    // When the App starts up, perform an initial data request then
-    // boot the data refresher
-    props.fetchData();
-
     this.state = {
       pivots: {},
       pivotPageSizes: [5,10,25,50,100],
       defaultPivotPageSize: 25,
       updateInterval: null,
       rate: 30000,
-      saveInterval: setInterval(
-        function() {
-          this.storeState();
-        }.bind(this),
-        10000
-      )
+      saveInterval: null
     };
+  }
+
+  componentDidMount() {
+
+    // When the App starts up, perform an initial data request then
+    // boot the data refresher
+    this.props.fetchData();
+    this.props.loadProfile().then(() => {
+      this.setState(() => {
+        return {
+          saveInterval: setInterval(
+            function() {
+              this.storeState();
+            }.bind(this),
+            10000
+          )
+        }
+      })
+    });
   }
 
   componentWillReceiveProps() {
@@ -188,7 +198,7 @@ class TransactionReport extends Component {
     }
   }
 
-  updatePivotRows(uuid, action:(number)) {
+  updatePivotRows(uuid, action) {
     return function(event) {
       action({'uuid':uuid, 'numRows':event.target.value|0})
     };
@@ -227,10 +237,7 @@ class TransactionReport extends Component {
       endDate: this.props.endDate
     };
 
-    axios.patch(
-      `/admin/transactions/profile/${this.props.user.id}/?nonce=${this.props.nonce}`,
-      toStore
-    );
+    this.props.saveProfile(toStore);
 
     this.setState({pivots: {}})
   }
