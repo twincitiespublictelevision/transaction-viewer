@@ -113,7 +113,7 @@ function _possibleConstructorReturn(self, call) {
 }
 
 //      
-var SET_CONFIG$1 = 'setConfig';
+var SET_CONFIG = 'setConfig';
 var RECEIVED_FIELDS = 'recievedFields';
 var RECEIVED_DATA = 'recievedData';
 var CHANGE_ROWS_PER_PAGE = 'changeRowsPerPage';
@@ -310,7 +310,7 @@ var reducer = function reducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
-    case SET_CONFIG$1:
+    case SET_CONFIG:
       return Object.assign({}, state, {
         config: action.value
       });

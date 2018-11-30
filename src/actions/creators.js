@@ -4,7 +4,7 @@ import * as actions from './actions';
 import moment from 'moment';
 
 export function configure(configuration) {
-  return {type: SET_CONFIG, value: configuration};
+  return {type: actions.SET_CONFIG, value: configuration};
 }
 
 export function loadFields(dispatch, getState) {
