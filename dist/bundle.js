@@ -1120,7 +1120,9 @@ function (_Component) {
           className: "transaction-filter"
         }, filterItems);
       }));
-      return React.createElement("div", null, React.createElement("table", {
+      return React.createElement("div", {
+        className: "field-filter-inputs"
+      }, React.createElement("table", {
         className: "transaction-filter-controls"
       }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("td", null, "Filter Mode"), React.createElement("td", null, React.createElement("select", {
         onChange: this.changeFilterMode.bind(this),

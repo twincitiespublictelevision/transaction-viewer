@@ -106,7 +106,7 @@ class FilterManager extends Component {
         }</ul>;
 
       return (
-        <div>
+        <div className="field-filter-inputs">
           <table className="transaction-filter-controls">
             <thead>
             <tr>
