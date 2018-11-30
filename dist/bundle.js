@@ -2032,7 +2032,7 @@ function (_Component) {
   return TransactionViewerInner;
 }(Component);
 
-var TView = connector(TransactionViewer);
+var TView = connector(TransactionViewerInner);
 
 var TransactionViewer =
 /*#__PURE__*/

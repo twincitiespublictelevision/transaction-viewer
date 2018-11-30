@@ -30,7 +30,7 @@ class TransactionViewerInner extends Component {
   }
 }
 
-const TView = connector(TransactionViewer);
+const TView = connector(TransactionViewerInner);
 
 class TransactionViewer extends Component {
   render() {
