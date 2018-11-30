@@ -29,11 +29,13 @@ class TransactionViewerInner extends Component {
   }
 }
 
+const TView = connect(TransactionViewer);
+
 class TransactionViewer extends Component {
   render() {
     return (
       <Provider store={store}>
-        <TransactionViewerInner
+        <TView
           fieldsEndpoint={this.props.fieldsEndpoint}
           profileEndpoint={this.props.profileEndpoint}
           transactionsEndpoint={this.props.transactionsEndpoint}
