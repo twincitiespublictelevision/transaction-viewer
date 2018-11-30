@@ -4,6 +4,7 @@ import { store } from './store';
 import 'react-dates/initialize';
 import TransactionReport from './components/TransactionReport.jsx';
 import styles from './style.css';
+import { connector } from './store';
 
 class TransactionViewerInner extends Component {
   componentDidMount() {
@@ -29,7 +30,7 @@ class TransactionViewerInner extends Component {
   }
 }
 
-const TView = connect(TransactionViewer);
+const TView = connector(TransactionViewer);
 
 class TransactionViewer extends Component {
   render() {

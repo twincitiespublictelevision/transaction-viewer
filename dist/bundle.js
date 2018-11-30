@@ -3,7 +3,7 @@ import debounce from 'lodash.debounce';
 import moment from 'moment';
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { connect as connect$1, Provider } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import React, { Component } from 'react';
 import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
@@ -497,7 +497,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-var connector = connect$1(mapStateToProps, mapDispatchToProps);
+var connector = connect(mapStateToProps, mapDispatchToProps);
 
 function testRow(row, filterDimension, filterValue) {
   var point = row[filterDimension] !== null && typeof row[filterDimension] !== 'undefined' ? row[filterDimension] : '';
@@ -2032,7 +2032,7 @@ function (_Component) {
   return TransactionViewerInner;
 }(Component);
 
-var TView = connect(TransactionViewer);
+var TView = connector(TransactionViewer);
 
 var TransactionViewer =
 /*#__PURE__*/
