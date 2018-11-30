@@ -1753,6 +1753,7 @@ function (_Component) {
 
       // When the App starts up, perform an initial data request then
       // boot the data refresher
+      this.props.loadFields();
       this.props.fetchData();
       this.props.loadProfile().then(function () {
         _this2.setState(function () {
