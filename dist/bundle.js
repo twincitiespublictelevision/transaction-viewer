@@ -212,7 +212,7 @@ function setAdvancedFilters(filterList) {
 var updateDataHelper = debounce(function updateDataHelper(dispatch, getState) {
   var start = getState().startDate;
   var end = getState().endDate || Date.now();
-  return axios.get("".concat(getState().config.endpoints.transaction, "?start=").concat(start, "&end=").concat(end)).then(function (response) {
+  return axios.get("".concat(getState().config.endpoints.transactions, "?start=").concat(start, "&end=").concat(end)).then(function (response) {
     dispatch(receiveData(response.data));
   });
 }, 250);
