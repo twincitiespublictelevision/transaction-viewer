@@ -115,18 +115,21 @@ export function removePivotView(uuid) {
 export function loadProfile(dispatch, getState) {
   return axios.get(getState().config.endpoints.profile)
     .then(function(response) {
+      let filters = response.data.filters || [];
+      filters.forEach(filter => {
+        filter.fn = function (input) {
+          let point = input[filter.type] !== null ? input[filter.type] : '';
+
+          // Transform the record data point to a string and perform a simple
+          // search to determine matches
+          return point.toString().search(new RegExp(filter.value, 'i')) !== -1;
+        }
+      });
+
       let settings = {
         startDate: moment(response.data.startDate),
         endDate: moment(response.data.endDate),
-        filters: response.data.filters.forEach(filter => {
-          filter.fn = function (input) {
-            let point = input[filter.type] !== null ? input[filter.type] : '';
-
-            // Transform the record data point to a string and perform a simple
-            // search to determine matches
-            return point.toString().search(new RegExp(filter.value, 'i')) !== -1;
-          }
-        }),
+        filters: filters,
         pivots: response.data.pivots
       };
 

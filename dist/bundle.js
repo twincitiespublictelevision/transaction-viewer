@@ -258,17 +258,19 @@ function removePivotView(uuid$$1) {
 }
 function loadProfile(dispatch, getState) {
   return axios.get(getState().config.endpoints.profile).then(function (response) {
+    var filters = response.data.filters || [];
+    filters.forEach(function (filter) {
+      filter.fn = function (input) {
+        var point = input[filter.type] !== null ? input[filter.type] : ''; // Transform the record data point to a string and perform a simple
+        // search to determine matches
+
+        return point.toString().search(new RegExp(filter.value, 'i')) !== -1;
+      };
+    });
     var settings = {
       startDate: moment(response.data.startDate),
       endDate: moment(response.data.endDate),
-      filters: response.data.filters.forEach(function (filter) {
-        filter.fn = function (input) {
-          var point = input[filter.type] !== null ? input[filter.type] : ''; // Transform the record data point to a string and perform a simple
-          // search to determine matches
-
-          return point.toString().search(new RegExp(filter.value, 'i')) !== -1;
-        };
-      }),
+      filters: filters,
       pivots: response.data.pivots
     };
     dispatch({
