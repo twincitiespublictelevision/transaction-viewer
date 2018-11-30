@@ -334,7 +334,7 @@ const mapDispatchToProps = function mapDispatchToProps(dispatch) {
       return actionCreators.loadProfile(dispatch, store.getState);
     },
     saveProfile(data) {
-      return actionCreators.updateProfile(updateProfile)(dispatch, store.getState);
+      return actionCreators.updateProfile(data)(dispatch, store.getState);
     }
   };
 };

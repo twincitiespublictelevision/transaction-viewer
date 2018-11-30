@@ -279,7 +279,7 @@ function loadProfile(dispatch, getState) {
     });
   });
 }
-function updateProfile$1(toStore) {
+function updateProfile(toStore) {
   return function (dispatch, getState) {
     return axios.patch(this.props.config.endpoints.profile, toStore).then(function (response) {
       dispatch({
@@ -497,7 +497,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
       return loadProfile(dispatch, store.getState);
     },
     saveProfile: function saveProfile(data) {
-      return updateProfile$1(updateProfile)(dispatch, store.getState);
+      return updateProfile(data)(dispatch, store.getState);
     }
   };
 };
