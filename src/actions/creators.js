@@ -140,7 +140,7 @@ export function loadProfile(dispatch, getState) {
 export function updateProfile(toStore) {
   return function(dispatch, getState) {
     return axios.patch(
-      this.props.config.endpoints.profile,
+      getState().config.endpoints.profile,
       toStore
     ).then(function(response) {
       dispatch({type: actions.UPDATED_PROFILE, value: null});

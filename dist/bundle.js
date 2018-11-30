@@ -281,7 +281,7 @@ function loadProfile(dispatch, getState) {
 }
 function updateProfile(toStore) {
   return function (dispatch, getState) {
-    return axios.patch(this.props.config.endpoints.profile, toStore).then(function (response) {
+    return axios.patch(getState().config.endpoints.profile, toStore).then(function (response) {
       dispatch({
         type: UPDATED_PROFILE,
         value: null
