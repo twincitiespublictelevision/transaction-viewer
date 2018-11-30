@@ -21,7 +21,7 @@ class TransactionViewerInner extends Component {
       config: { endpoints: { fields, profile, transactions }}
     } = this.props;
 
-    if (fields && profile && transactions)))) {
+    if (fields && profile && transactions) {
       return <TransactionReport />;
     } else {
       return null;

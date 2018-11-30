@@ -8,7 +8,7 @@ import * as actionCreators from './actions/creators';
 import moment from 'moment';
 
 export type Endpoints = {|
-  fields: string
+  fields: string,
   profile: string,
   transactions: string
 |};
@@ -289,7 +289,7 @@ const mapDispatchToProps = function mapDispatchToProps(dispatch) {
       dispatch(actionCreators.configure(config));
     },
     loadFields() {
-      return actionCreators.loadFields(dispatch, store.getState;
+      return actionCreators.loadFields(dispatch, store.getState);
     },
     fetchData() {
       return actionCreators.fetchData(dispatch, store.getState);
