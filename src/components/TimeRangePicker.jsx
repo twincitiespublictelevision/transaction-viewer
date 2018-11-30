@@ -25,7 +25,7 @@ export class TimeRangePicker extends Component<*, *> {
     const end = this.props.endDate;
 
     return (
-      <div>
+      <div className="timerange-input">
         <div>
           <div className="timerange-display">
             <div className="label">Start: </div>

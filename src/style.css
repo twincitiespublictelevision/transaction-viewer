@@ -5,7 +5,6 @@
 .transaction-filter-controls,
 .transaction-date-controls,
 .transaction-records {
-  margin: 2px;
   padding: 4px 8px;
   overflow: auto;
 }

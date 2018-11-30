@@ -306,7 +306,7 @@ class TransactionReport extends Component {
           </div>
           <div className="transaction-time-filters">
             <h3>Time Range</h3>
-            <TimeRangePicker />
+            <TimeRangePicker/>
           </div>
           <div className="transaction-field-filters">
             <h3>Filters</h3>
