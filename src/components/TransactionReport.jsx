@@ -303,62 +303,63 @@ class TransactionReport extends Component {
           <div className="transaction-date-filters">
             <h3>Date Range</h3>
             <DateManager/>
+          </div>
+          <div className="transaction-time-filters">
             <h3>Time Range</h3>
             <TimeRangePicker />
-          </div>
-          <div className="transaction-summary">
-            <h3>Unfiltered Summary</h3>
-            <TransactionTotals/>
           </div>
           <div className="transaction-field-filters">
             <h3>Filters</h3>
             <FilterManager/>
           </div>
         </div>
-        <h3>Records</h3>
-        <TransactionTable data={data} />
-        <h3>Pivot Views</h3>
-        <ul className="transaction-pivot-views">
-          {Object.keys(props.pivots).map((uuid, index) => {
-            let remove = <button className="transaction-pivot-remove" onClick={() => props.removePivotView(uuid)}>
-              Remove View
-            </button>;
 
-            return (
-              <li key={uuid}>
-                <div>
-                  <h4>
-                    View {index + 1} {remove}
-                  </h4>
-                </div>
-                <div className="transaction-records-per-page">
-                  <label className="per-page-control">
-                    <span>Show </span>
-                    <select onChange={this.updatePivotRows(uuid,props.changeRowsPerPivot)} value={props.pivots[uuid].numRows}>
-                      {this.state.pivotPageSizes.map((opt, index) => <option key={index} value={opt}>{opt}</option>)}
-                    </select>
-                    <span> rows per page</span>
-                  </label>
-                </div>
-                <div className="transaction-pivot-table">
-                  <ReactPivot
-                    ref={ref => pivotUpdate(uuid, ref)}
-                    rows={data}
-                    dimensions={props.dimensions}
-                    reduce={reduce}
-                    calculations={calculations}
-                    hiddenColumns={props.pivots[uuid].hiddenColumns || ['Average', 'Max']}
-                    activeDimensions={props.pivots[uuid].dimensions}
-                    nPaginateRows={props.pivots[uuid].numRows} />
+        <div className="transaction-viewer-data">
+          <h3>Records</h3>
+          <TransactionTable data={data} />
+          <h3>Pivot Views</h3>
+          <ul className="transaction-pivot-views">
+            {Object.keys(props.pivots).map((uuid, index) => {
+              let remove = <button className="transaction-pivot-remove" onClick={() => props.removePivotView(uuid)}>
+                Remove View
+              </button>;
 
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="transaction-pivot-table-add">
-          <button onClick={this.addNewPivotView(props.addPivotView)}> Add New Pivot View </button>
-      </div>
+              return (
+                <li key={uuid}>
+                  <div>
+                    <h4>
+                      View {index + 1} {remove}
+                    </h4>
+                  </div>
+                  <div className="transaction-records-per-page">
+                    <label className="per-page-control">
+                      <span>Show </span>
+                      <select onChange={this.updatePivotRows(uuid,props.changeRowsPerPivot)} value={props.pivots[uuid].numRows}>
+                        {this.state.pivotPageSizes.map((opt, index) => <option key={index} value={opt}>{opt}</option>)}
+                      </select>
+                      <span> rows per page</span>
+                    </label>
+                  </div>
+                  <div className="transaction-pivot-table">
+                    <ReactPivot
+                      ref={ref => pivotUpdate(uuid, ref)}
+                      rows={data}
+                      dimensions={props.dimensions}
+                      reduce={reduce}
+                      calculations={calculations}
+                      hiddenColumns={props.pivots[uuid].hiddenColumns || ['Average', 'Max']}
+                      activeDimensions={props.pivots[uuid].dimensions}
+                      nPaginateRows={props.pivots[uuid].numRows} />
+
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="transaction-pivot-table-add">
+            <button onClick={this.addNewPivotView(props.addPivotView)}> Add New Pivot View </button>
+          </div>
+        </div>
       </div>
     );
   }
