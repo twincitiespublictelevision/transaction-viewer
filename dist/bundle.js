@@ -211,7 +211,10 @@ function setAdvancedFilters(filterList) {
 }
 var updateDataHelper = debounce(function updateDataHelper(dispatch, getState) {
   var start = getState().startDate;
-  var end = getState().endDate || Date.now();
+  var end = getState().endDate; // Transform to timestamps
+
+  start = start && start.format && start.format('x') || null;
+  end = end && end.format && end.format('x') || Date.now();
   return axios.get("".concat(getState().config.endpoints.transactions, "?start=").concat(start, "&end=").concat(end)).then(function (response) {
     dispatch(receiveData(response.data));
   });

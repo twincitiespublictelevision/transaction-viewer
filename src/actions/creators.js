@@ -71,7 +71,11 @@ export function setAdvancedFilters(filterList) {
 let updateDataHelper = debounce(
   function updateDataHelper(dispatch, getState) {
     let start = getState().startDate;
-    let end = getState().endDate || Date.now();
+    let end = getState().endDate;
+
+    // Transform to timestamps
+    start = start && start.format && start.format('x') || null;
+    end = end && end.format && end.format('x') || Date.now();
 
     return axios.get(`${getState().config.endpoints.transactions}?start=${start}&end=${end}`)
       .then(function(response) {
