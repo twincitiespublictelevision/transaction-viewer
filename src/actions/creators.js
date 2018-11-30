@@ -73,7 +73,7 @@ let updateDataHelper = debounce(
     let start = getState().startDate;
     let end = getState().endDate || Date.now();
 
-    return axios.get(`${getState().config.endpoints.transaction}?start=${start}&end=${end}`)
+    return axios.get(`${getState().config.endpoints.transactions}?start=${start}&end=${end}`)
       .then(function(response) {
         dispatch(receiveData(response.data));
       });
