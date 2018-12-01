@@ -88,7 +88,7 @@ class FilterManager extends Component {
             this.props.filterMethod === 'advanced' &&
             <button className="transaction-filter-add"
                     onClick={this.openAdvancedFilters.bind(this)}>
-              Advanced Filters
+              Edit Advanced Filters
             </button>
           }
         </td>

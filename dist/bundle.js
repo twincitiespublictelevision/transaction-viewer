@@ -1097,7 +1097,7 @@ function (_Component) {
       }, React.createElement("tr", null, React.createElement("td", null, this.props.filterMethod === 'advanced' && React.createElement("button", {
         className: "transaction-filter-add",
         onClick: this.openAdvancedFilters.bind(this)
-      }, "Advanced Filters"))));
+      }, "Edit Advanced Filters"))));
     }
   }, {
     key: "renderFiltersInput",
