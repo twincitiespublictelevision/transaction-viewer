@@ -80,6 +80,62 @@ class FilterManager extends Component {
     })
   }
 
+  renderAdvancedFiltersInput() {
+    return <tbody className="advanced-filters">
+      <tr>
+        <td>
+          {
+            this.props.filterMethod === 'advanced' &&
+            <button className="transaction-filter-add"
+                    onClick={this.openAdvancedFilters.bind(this)}>
+              Advanced Filters
+            </button>
+          }
+        </td>
+      </tr>
+    </tbody>;
+  }
+
+  renderFiltersInput() {
+    return <tbody className="standard-filters">
+      <tr>
+        <td>
+          Type
+        </td>
+        <td>
+          <label htmlFor="filter-value">Value</label>
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
+          <select onChange={this.updateFilterType.bind(this)} value={this.state.createType}>
+            <option key={0} value="">Select a type</option>
+            {
+              // Allow each of the dimensions to have a filter applied to it
+              this.props.dimensions.map((dim, index) =>
+                (<option key={index + 1} value={dim.value}>{dim.title}</option>)
+              )
+            }
+          </select>
+        </td>
+        <td>
+          <input
+            id="filter-value"
+            placeholder="Filter Value"
+            value={this.state.createValue}
+            onChange={this.updateFilterValue.bind(this)}/>
+        </td>
+        <td>
+          <button className="transaction-filter-add" disabled={this.state.createDisabled}
+                  onClick={this.createFilter(this.props.addFilter).bind(this)}>
+            Add Filter
+          </button>
+        </td>
+      </tr>
+    </tbody>;
+  }
+
   render() {
 
       // Create the list of individual filters that exist
@@ -118,52 +174,11 @@ class FilterManager extends Component {
                   <option value="advanced">Advanced</option>
                 </select>
               </td>
-              <td>{ this.props.filterMethod === 'advanced' &&
-              <button className="transaction-filter-add"
-                      onClick={this.openAdvancedFilters.bind(this)}>
-                Advanced Filters
-              </button>
-              }</td>
             </tr>
             </thead>
-            { this.props.filterMethod !== 'advanced' &&
-            <tbody>
-            <tr>
-              <td>
-                Type
-              </td>
-              <td>
-                <label htmlFor="filter-value">Value</label>
-              </td>
-              <td>&nbsp;</td>
-            </tr>
-            <tr>
-              <td>
-                <select onChange={this.updateFilterType.bind(this)} value={this.state.createType}>
-                  <option key={0} value="">Select a type</option>
-                  {
-                    // Allow each of the dimensions to have a filter applied to it
-                    this.props.dimensions.map((dim, index) =>
-                      (<option key={index + 1} value={dim.value}>{dim.title}</option>)
-                    )
-                  }
-                </select>
-              </td>
-              <td>
-                <input
-                  id="filter-value"
-                  placeholder="Filter Value"
-                  value={this.state.createValue}
-                  onChange={this.updateFilterValue.bind(this)}/>
-              </td>
-              <td>
-                <button className="transaction-filter-add" disabled={this.state.createDisabled}
-                        onClick={this.createFilter(this.props.addFilter).bind(this)}>
-                  Add Filter
-                </button>
-              </td>
-            </tr>
-            </tbody>
+            {
+              this.props.filterMethod === 'advanced' ?
+                this.renderAdvancedFiltersInput() : this.renderFiltersInput()
             }
           </table>
           { this.props.filterMethod !== 'advanced' && this.props.filters.length > 0 ? filterList : ''

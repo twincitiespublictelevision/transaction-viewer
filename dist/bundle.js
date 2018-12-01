@@ -1090,6 +1090,46 @@ function (_Component) {
       });
     }
   }, {
+    key: "renderAdvancedFiltersInput",
+    value: function renderAdvancedFiltersInput() {
+      return React.createElement("tbody", {
+        className: "advanced-filters"
+      }, React.createElement("tr", null, React.createElement("td", null, this.props.filterMethod === 'advanced' && React.createElement("button", {
+        className: "transaction-filter-add",
+        onClick: this.openAdvancedFilters.bind(this)
+      }, "Advanced Filters"))));
+    }
+  }, {
+    key: "renderFiltersInput",
+    value: function renderFiltersInput() {
+      return React.createElement("tbody", {
+        className: "standard-filters"
+      }, React.createElement("tr", null, React.createElement("td", null, "Type"), React.createElement("td", null, React.createElement("label", {
+        htmlFor: "filter-value"
+      }, "Value")), React.createElement("td", null, "\xA0")), React.createElement("tr", null, React.createElement("td", null, React.createElement("select", {
+        onChange: this.updateFilterType.bind(this),
+        value: this.state.createType
+      }, React.createElement("option", {
+        key: 0,
+        value: ""
+      }, "Select a type"), // Allow each of the dimensions to have a filter applied to it
+      this.props.dimensions.map(function (dim, index) {
+        return React.createElement("option", {
+          key: index + 1,
+          value: dim.value
+        }, dim.title);
+      }))), React.createElement("td", null, React.createElement("input", {
+        id: "filter-value",
+        placeholder: "Filter Value",
+        value: this.state.createValue,
+        onChange: this.updateFilterValue.bind(this)
+      })), React.createElement("td", null, React.createElement("button", {
+        className: "transaction-filter-add",
+        disabled: this.state.createDisabled,
+        onClick: this.createFilter(this.props.addFilter).bind(this)
+      }, "Add Filter"))));
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -1135,33 +1175,7 @@ function (_Component) {
         value: "additive"
       }, "Match Any"), React.createElement("option", {
         value: "advanced"
-      }, "Advanced"))), React.createElement("td", null, this.props.filterMethod === 'advanced' && React.createElement("button", {
-        className: "transaction-filter-add",
-        onClick: this.openAdvancedFilters.bind(this)
-      }, "Advanced Filters")))), this.props.filterMethod !== 'advanced' && React.createElement("tbody", null, React.createElement("tr", null, React.createElement("td", null, "Type"), React.createElement("td", null, React.createElement("label", {
-        htmlFor: "filter-value"
-      }, "Value")), React.createElement("td", null, "\xA0")), React.createElement("tr", null, React.createElement("td", null, React.createElement("select", {
-        onChange: this.updateFilterType.bind(this),
-        value: this.state.createType
-      }, React.createElement("option", {
-        key: 0,
-        value: ""
-      }, "Select a type"), // Allow each of the dimensions to have a filter applied to it
-      this.props.dimensions.map(function (dim, index) {
-        return React.createElement("option", {
-          key: index + 1,
-          value: dim.value
-        }, dim.title);
-      }))), React.createElement("td", null, React.createElement("input", {
-        id: "filter-value",
-        placeholder: "Filter Value",
-        value: this.state.createValue,
-        onChange: this.updateFilterValue.bind(this)
-      })), React.createElement("td", null, React.createElement("button", {
-        className: "transaction-filter-add",
-        disabled: this.state.createDisabled,
-        onClick: this.createFilter(this.props.addFilter).bind(this)
-      }, "Add Filter"))))), this.props.filterMethod !== 'advanced' && this.props.filters.length > 0 ? filterList : '', this.props.filterMethod === 'advanced' ? appliedFilters : '', this.state.showAdvancedFilters && React.createElement("div", {
+      }, "Advanced"))))), this.props.filterMethod === 'advanced' ? this.renderAdvancedFiltersInput() : this.renderFiltersInput()), this.props.filterMethod !== 'advanced' && this.props.filters.length > 0 ? filterList : '', this.props.filterMethod === 'advanced' ? appliedFilters : '', this.state.showAdvancedFilters && React.createElement("div", {
         className: "filter-overlay-wrapper"
       }, React.createElement("div", {
         className: "filter-overlay"
