@@ -346,7 +346,7 @@ class TransactionReport extends Component {
                       rows={data}
                       dimensions={props.dimensions}
                       reduce={reduce}
-                      calculations={calculations}
+                      calculations={props.calculations || calculations}
                       hiddenColumns={props.pivots[uuid].hiddenColumns || ['Average', 'Max']}
                       activeDimensions={props.pivots[uuid].dimensions}
                       nPaginateRows={props.pivots[uuid].numRows} />

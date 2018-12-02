@@ -19,11 +19,12 @@ class TransactionViewerInner extends Component {
 
   render() {
     let {
-      config: { endpoints: { fields, profile, transactions }}
+      config: { endpoints: { fields, profile, transactions }},
+      calculations
     } = this.props;
 
     if (fields && profile && transactions) {
-      return <TransactionReport />;
+      return <TransactionReport calculations={calculations} />;
     } else {
       return null;
     }
@@ -37,6 +38,7 @@ class TransactionViewer extends Component {
     return (
       <Provider store={store}>
         <TView
+          calculations={this.props.calculations || null}
           fieldsEndpoint={this.props.fieldsEndpoint}
           profileEndpoint={this.props.profileEndpoint}
           transactionsEndpoint={this.props.transactionsEndpoint}

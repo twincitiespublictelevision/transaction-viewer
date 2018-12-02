@@ -1967,7 +1967,7 @@ function (_Component) {
           rows: data,
           dimensions: props.dimensions,
           reduce: reduce,
-          calculations: calculations,
+          calculations: props.calculations || calculations,
           hiddenColumns: props.pivots[uuid$$1].hiddenColumns || ['Average', 'Max'],
           activeDimensions: props.pivots[uuid$$1].dimensions,
           nPaginateRows: props.pivots[uuid$$1].numRows
@@ -2042,13 +2042,17 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$props$config$en = this.props.config.endpoints,
+      var _this$props = this.props,
+          _this$props$config$en = _this$props.config.endpoints,
           fields = _this$props$config$en.fields,
           profile = _this$props$config$en.profile,
-          transactions = _this$props$config$en.transactions;
+          transactions = _this$props$config$en.transactions,
+          calculations = _this$props.calculations;
 
       if (fields && profile && transactions) {
-        return React.createElement(TransactionReport$1, null);
+        return React.createElement(TransactionReport$1, {
+          calculations: calculations
+        });
       } else {
         return null;
       }
@@ -2077,6 +2081,7 @@ function (_Component2) {
       return React.createElement(Provider, {
         store: store
       }, React.createElement(TView, {
+        calculations: this.props.calculations || null,
         fieldsEndpoint: this.props.fieldsEndpoint,
         profileEndpoint: this.props.profileEndpoint,
         transactionsEndpoint: this.props.transactionsEndpoint
