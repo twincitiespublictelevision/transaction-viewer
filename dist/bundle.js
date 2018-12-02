@@ -1966,7 +1966,7 @@ function (_Component) {
           },
           rows: data,
           dimensions: props.dimensions,
-          reduce: reduce,
+          reduce: props.reduce || reduce,
           calculations: props.calculations || calculations,
           hiddenColumns: props.pivots[uuid$$1].hiddenColumns || ['Average', 'Max'],
           activeDimensions: props.pivots[uuid$$1].dimensions,
@@ -2043,15 +2043,17 @@ function (_Component) {
     key: "render",
     value: function render() {
       var _this$props = this.props,
+          calculations = _this$props.calculations,
           _this$props$config$en = _this$props.config.endpoints,
           fields = _this$props$config$en.fields,
           profile = _this$props$config$en.profile,
           transactions = _this$props$config$en.transactions,
-          calculations = _this$props.calculations;
+          reduce = _this$props.reduce;
 
       if (fields && profile && transactions) {
         return React.createElement(TransactionReport$1, {
-          calculations: calculations
+          calculations: calculations,
+          reduce: reduce
         });
       } else {
         return null;
@@ -2082,6 +2084,7 @@ function (_Component2) {
         store: store
       }, React.createElement(TView, {
         calculations: this.props.calculations || null,
+        reduce: this.props.reduce || null,
         fieldsEndpoint: this.props.fieldsEndpoint,
         profileEndpoint: this.props.profileEndpoint,
         transactionsEndpoint: this.props.transactionsEndpoint

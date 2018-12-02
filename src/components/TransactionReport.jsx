@@ -345,7 +345,7 @@ class TransactionReport extends Component {
                       ref={ref => pivotUpdate(uuid, ref)}
                       rows={data}
                       dimensions={props.dimensions}
-                      reduce={reduce}
+                      reduce={props.reduce || reduce}
                       calculations={props.calculations || calculations}
                       hiddenColumns={props.pivots[uuid].hiddenColumns || ['Average', 'Max']}
                       activeDimensions={props.pivots[uuid].dimensions}
