@@ -1926,13 +1926,17 @@ function (_Component) {
       }, React.createElement("div", {
         className: "transaction-filters"
       }, React.createElement("div", {
+        className: "filters-wrapper"
+      }, React.createElement("div", {
         className: "transaction-date-filters"
       }, React.createElement("h3", null, "Date Range"), React.createElement(DateManager$1, null)), React.createElement("div", {
         className: "transaction-time-filters"
       }, React.createElement("h3", null, "Time Range"), React.createElement(TimeRangePicker$1, null)), React.createElement("div", {
         className: "transaction-field-filters"
-      }, React.createElement("h3", null, "Filters"), React.createElement(FilterManager$1, null))), React.createElement("div", {
+      }, React.createElement("h3", null, "Filters"), React.createElement(FilterManager$1, null)))), React.createElement("div", {
         className: "transaction-viewer-data"
+      }, React.createElement("div", {
+        className: "data-wrapper"
       }, React.createElement("h3", null, "Records"), React.createElement(TransactionTable$1, {
         data: data
       }), React.createElement("h3", null, "Pivot Views"), React.createElement("ul", {
@@ -1976,7 +1980,7 @@ function (_Component) {
         className: "transaction-pivot-table-add"
       }, React.createElement("button", {
         onClick: this.addNewPivotView(props.addPivotView)
-      }, " Add New Pivot View "))));
+      }, " Add New Pivot View ")))));
     }
   }]);
 
