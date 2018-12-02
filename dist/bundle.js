@@ -1937,7 +1937,7 @@ function (_Component) {
         className: "transaction-viewer-data"
       }, React.createElement("div", {
         className: "data-wrapper"
-      }, React.createElement("h3", null, "Records"), React.createElement(TransactionTable$1, {
+      }, React.createElement("h3", null, "Records [", data.length, "]"), React.createElement(TransactionTable$1, {
         data: data
       }), React.createElement("h3", null, "Pivot Views"), React.createElement("ul", {
         className: "transaction-pivot-views"

@@ -318,7 +318,7 @@ class TransactionReport extends Component {
 
         <div className="transaction-viewer-data">
           <div className="data-wrapper">
-            <h3>Records</h3>
+            <h3>Records [{data.length}]</h3>
             <TransactionTable data={data} />
             <h3>Pivot Views</h3>
             <ul className="transaction-pivot-views">
