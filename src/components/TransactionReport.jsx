@@ -219,6 +219,8 @@ class TransactionReport extends Component {
       if (pivotState.hasOwnProperty(uuid) && typeof this.props.pivots[uuid] !== 'undefined') {
         pivotState[uuid] = pivotRefToProps(pivotState[uuid]);
         pivotState[uuid].numRows = this.props.pivots[uuid].numRows;
+
+        this.props.updatePivotView(uuid, pivotState[uuid]);
       }
     }
 

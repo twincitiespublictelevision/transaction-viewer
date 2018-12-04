@@ -112,6 +112,11 @@ export function removePivotView(uuid) {
   return {type: actions.REMOVE_PIVOT_VIEW, value: uuid};
 }
 
+export function updatePivotView(uuid, state) {
+  let pivot = { uuid, state };
+  return {type: actions.UPDATE_PIVOT_SETTINGS, value: pivot};
+}
+
 export function loadProfile(dispatch, getState) {
   return axios.get(getState().config.endpoints.profile)
     .then(function(response) {

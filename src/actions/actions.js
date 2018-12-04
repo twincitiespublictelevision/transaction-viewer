@@ -16,5 +16,6 @@ export const SET_END_DATE = 'setEndDate';
 export const REMOVE_END_DATE = 'removeEndDate';
 export const ADD_PIVOT_VIEW = 'addPivotView';
 export const REMOVE_PIVOT_VIEW = 'removePivotView';
+export const UPDATE_PIVOT_SETTINGS = 'updatePivotSettings';
 export const RECEIVED_PROFILE = 'recievedProfile';
 export const UPDATED_PROFILE = 'updatedProfile';

@@ -222,6 +222,17 @@ const reducer = function reducer(state: State = defaultState, action) {
         {pivots: lessPivots}
       );
 
+    case actions.UPDATE_PIVOT_SETTINGS: {
+      let pivots = Object.assign({}, state.pivots);
+      pivots[action.value.uuid] = action.value.state;
+
+      return Object.assign(
+        {},
+        state,
+        {pivots}
+      );
+    }
+
     case actions.CHANGE_ROWS_PER_PIVOT:
       let pivots = Object.assign({}, state.pivots);
 
@@ -329,6 +340,9 @@ const mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     removePivotView(uuid) {
       dispatch(actionCreators.removePivotView(uuid));
+    },
+    updatePivotView(uuid, pivotState) {
+      dispatch(actionCreators.updatePivotView(uuid, pivotState));
     },
     loadProfile() {
       return actionCreators.loadProfile(dispatch, store.getState);

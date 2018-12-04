@@ -127,6 +127,7 @@ var SET_END_DATE = 'setEndDate';
 var REMOVE_END_DATE = 'removeEndDate';
 var ADD_PIVOT_VIEW = 'addPivotView';
 var REMOVE_PIVOT_VIEW = 'removePivotView';
+var UPDATE_PIVOT_SETTINGS = 'updatePivotSettings';
 var RECEIVED_PROFILE = 'recievedProfile';
 var UPDATED_PROFILE = 'updatedProfile';
 
@@ -254,6 +255,16 @@ function removePivotView(uuid$$1) {
   return {
     type: REMOVE_PIVOT_VIEW,
     value: uuid$$1
+  };
+}
+function updatePivotView(uuid$$1, state) {
+  var pivot = {
+    uuid: uuid$$1,
+    state: state
+  };
+  return {
+    type: UPDATE_PIVOT_SETTINGS,
+    value: pivot
   };
 }
 function loadProfile(dispatch, getState) {
@@ -402,6 +413,16 @@ var reducer = function reducer() {
         pivots: lessPivots
       });
 
+    case UPDATE_PIVOT_SETTINGS:
+      {
+        var _pivots = Object.assign({}, state.pivots);
+
+        _pivots[action.value.uuid] = action.value.state;
+        return Object.assign({}, state, {
+          pivots: _pivots
+        });
+      }
+
     case CHANGE_ROWS_PER_PIVOT:
       var pivots = Object.assign({}, state.pivots);
 
@@ -492,6 +513,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     removePivotView: function removePivotView$$1(uuid$$1) {
       dispatch(removePivotView(uuid$$1));
+    },
+    updatePivotView: function updatePivotView$$1(uuid$$1, pivotState) {
+      dispatch(updatePivotView(uuid$$1, pivotState));
     },
     loadProfile: function loadProfile$$1() {
       return loadProfile(dispatch, store.getState);
@@ -1848,6 +1872,7 @@ function (_Component) {
         if (pivotState.hasOwnProperty(_uuid) && typeof this.props.pivots[_uuid] !== 'undefined') {
           pivotState[_uuid] = pivotRefToProps(pivotState[_uuid]);
           pivotState[_uuid].numRows = this.props.pivots[_uuid].numRows;
+          this.props.updatePivotView(_uuid, pivotState[_uuid]);
         }
       }
 
