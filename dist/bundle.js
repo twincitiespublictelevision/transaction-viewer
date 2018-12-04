@@ -1997,7 +1997,7 @@ function (_Component) {
           dimensions: props.dimensions,
           reduce: props.reduce || reduce,
           calculations: props.calculations || calculations,
-          hiddenColumns: props.pivots[uuid$$1].hiddenColumns || ['Average', 'Max'],
+          hiddenColumns: props.pivots[uuid$$1].hiddenColumns || props.hiddenColumns || [],
           activeDimensions: props.pivots[uuid$$1].dimensions,
           nPaginateRows: props.pivots[uuid$$1].numRows
         })));
